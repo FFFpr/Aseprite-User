@@ -1,5 +1,5 @@
--- Ornate hammer based on hammer_round: gold trim + emerald on right of head.
--- Canvas 48x48. Does not modify hammer / hammer_round.
+-- Ornate hammer based on hammer_round: shaded gold trim + emerald.
+-- Gold left edge concave; gem +1 col; Y/R by light (no hard checker).
 -- Usage: ./scripts/aseprite-cli.sh --script scripts/make_hammer_ornate.lua
 
 local OUT_ASE = app.params["out_ase"] or "src/weapons/hammer_ornate.aseprite"
@@ -49,30 +49,30 @@ local rows = {
   "................................................", -- 4
   "................................................", -- 5
   ".....OOOOOOOOOOO................................", -- 6
-  "....OLLLLLLLLMRYO...............................", -- 7
-  "...OLLLLLLLLLMYRYO..............................", -- 8
-  "...OLLLLLLLLMMRYRO..............................", -- 9
-  "...OLLLLLLLMMMYRYO..............................", -- 10
-  "...OLLLLLLLMMMRYRO..............................", -- 11
-  "...OLLLLLLMMMMYRYO..............................", -- 12
-  "...OLLLLLMMMMMRYRO..............................", -- 13
-  "...OLLLLLMMMMMYRYRO.............................", -- 14
-  "...OLLLLMMMMMMRYRYOOOOOOOOOOOOOOOOOOO...........", -- 15
-  "..OlLLLLMMMMMMYEYRYllllllllllllwwwwwlO..........", -- 16
-  ".OllLLLMMMMMMMEGEYRllllllllllllwwwwwllO.........", -- 17
-  ".OmmLLMMMMMMMEGgGEYmmmmmmmmmmmmwwwwwmmO.........", -- 18
-  ".OmmLLMMMMMMMMEGEYRmmmmmmmmmmmmwwwwwmmO.........", -- 19
-  ".OddLMMMMMMMMMYEYRYddddddddddddwwwwwddO.........", -- 20
-  "..OdMMMMMMMMMDRYRYRddddddddddddwwwwwdO..........", -- 21
-  "...OMMMMMMMMMDYRYROOOOOOOOOOOOOOOOOOO...........", -- 22
-  "...OMMMMMMMMDDRYRYO.............................", -- 23
-  "...OMMMMMMMDDDYRYO..............................", -- 24
-  "...OMMMMMMMDDDRYRO..............................", -- 25
-  "...OMMMMMMDDDDYRYO..............................", -- 26
-  "...OMMMMMDDDDDRYRO..............................", -- 27
-  "...OMMMMMDDDDDYRYO..............................", -- 28
-  "...OMMMMDDDDDDRYRO..............................", -- 29
-  "....OMMDDDDDDDYRO...............................", -- 30
+  "....OLLLLLLLLMYYO...............................", -- 7
+  "...OLLLLLLLLLMYYYO..............................", -- 8
+  "...OLLLLLLLLMMYYYO..............................", -- 9
+  "...OLLLLLLLMMMMYYO..............................", -- 10
+  "...OLLLLLLLMMMMYYO..............................", -- 11
+  "...OLLLLLLMMMMMYYO..............................", -- 12
+  "...OLLLLLMMMMMMYYO..............................", -- 13
+  "...OLLLLLMMMMMMYYRO.............................", -- 14
+  "...OLLLLMMMMMMMMRROOOOOOOOOOOOOOOOOOO...........", -- 15
+  "..OlLLLLMMMMMMMMERRllllllllllllwwwwwlO..........", -- 16
+  ".OllLLLMMMMMMMMEGERllllllllllllwwwwwllO.........", -- 17
+  ".OmmLLMMMMMMMMEGgGEmmmmmmmmmmmmwwwwwmmO.........", -- 18
+  ".OmmLLMMMMMMMMDEGERmmmmmmmmmmmmwwwwwmmO.........", -- 19
+  ".OddLMMMMMMMMMDDERRddddddddddddwwwwwddO.........", -- 20
+  "..OdMMMMMMMMMDDDRRRddddddddddddwwwwwdO..........", -- 21
+  "...OMMMMMMMMMDDDRROOOOOOOOOOOOOOOOOOO...........", -- 22
+  "...OMMMMMMMMDDDRRRO.............................", -- 23
+  "...OMMMMMMMDDDDRRO..............................", -- 24
+  "...OMMMMMMMDDDDRRO..............................", -- 25
+  "...OMMMMMMDDDDDRRO..............................", -- 26
+  "...OMMMMMDDDDDDRRO..............................", -- 27
+  "...OMMMMMDDDDDRRRO..............................", -- 28
+  "...OMMMMDDDDDDRRRO..............................", -- 29
+  "....OMMDDDDDDDRRO...............................", -- 30
   ".....OOOOOOOOOOO................................", -- 31
   "................................................", -- 32
   "................................................", -- 33
