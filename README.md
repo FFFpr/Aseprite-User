@@ -20,7 +20,7 @@ Pixel-art asset repository. Edit `.aseprite` files under `src/`, export into `ex
 ./scripts/install-aseprite.sh      # Skia + Aseprite → ~/.local/opt/aseprite
 ```
 
-Cloud Agents: use install command `./scripts/cloud-agent-install.sh` in the Cursor Environment panel (Save the tested snapshot so Aseprite is already present).
+Cloud Agents use `.cursor/environment.json` → `./scripts/cloud-agent-install.sh` (headless smoke test included; builds Aseprite when the binary is missing).
 
 ## Export (headless / Linux)
 
