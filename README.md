@@ -23,7 +23,8 @@ Cloud Agents run `./scripts/cloud-agent-install.sh` via `.cursor/environment.jso
 ## Export (headless Linux)
 
 ```bash
-./scripts/export-all.sh
+./scripts/export.sh --input src --output export
+./scripts/export.sh --input src/player/idle.aseprite --output export/player/idle.png
 ```
 
 Uses batch mode and Xvfb when `DISPLAY` is unset. Interactive GUI: run `aseprite` directly when a display is available.
