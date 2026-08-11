@@ -23,7 +23,6 @@ Cloud Agents run `./scripts/cloud-agent-install.sh` via `.cursor/environment.jso
 ## Export (headless Linux)
 
 ```bash
-./scripts/export.sh --input src --output export
 ./scripts/export.sh --input src/player/idle.aseprite --output export/player/idle.png
 ```
 
