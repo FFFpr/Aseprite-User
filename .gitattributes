@@ -1,0 +1,6 @@
+# Binary sources and large art (track with Git LFS when enabled)
+*.aseprite filter=lfs diff=lfs merge=lfs -text
+*.ase filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text

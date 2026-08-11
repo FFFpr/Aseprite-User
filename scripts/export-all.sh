@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Export every .aseprite / .ase file under src/ into export/.
+# During development, game repos can read export/ directly (no Release required).
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SRC="$ROOT/src"
+OUT="$ROOT/export"
+
+if ! command -v aseprite >/dev/null 2>&1; then
+  if [[ -x "$HOME/.local/bin/aseprite" ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+  else
+    echo "aseprite not found. Run scripts/install-aseprite.sh first." >&2
+    exit 1
+  fi
+fi
+
+mkdir -p "$OUT"
+
+shopt -s nullglob globstar
+files=("$SRC"/**/*.{aseprite,ase} "$SRC"/*.{aseprite,ase})
+# Deduplicate
+mapfile -t files < <(printf '%s\n' "${files[@]}" | awk 'NF && !seen[$0]++')
+
+if [[ ${#files[@]} -eq 0 ]]; then
+  echo "No .aseprite/.ase files under src/. Nothing to export."
+  exit 0
+fi
+
+count=0
+for src in "${files[@]}"; do
+  [[ -f "$src" ]] || continue
+  rel="${src#"$SRC"/}"
+  dest_dir="$OUT/$(dirname "$rel")"
+  base="$(basename "$rel")"
+  base_noext="${base%.*}"
+  mkdir -p "$dest_dir"
+  dest="$dest_dir/${base_noext}.png"
+  echo "Exporting $rel -> ${dest#"$ROOT"/}"
+  # -b: batch / headless; flat PNG per file (spritesheets can use a custom script later)
+  aseprite -b "$src" --save-as "$dest"
+  count=$((count + 1))
+done
+
+echo "Exported $count file(s) into export/."

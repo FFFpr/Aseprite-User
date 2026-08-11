@@ -1,0 +1,2 @@
+# Place Aseprite source files (*.aseprite / *.ase) in this tree.
+# Run ../scripts/export-all.sh to write PNGs into ../export/.
