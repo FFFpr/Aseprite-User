@@ -9,8 +9,9 @@ Pixel-art asset repository. Edit `.aseprite` files under `src/`, export into `ex
 | `src/` | Aseprite sources (`.aseprite` / `.ase`) |
 | `export/` | Exported PNGs for game projects |
 | `scripts/install-aseprite.sh` | Build and install Aseprite (personal use, EULA) |
-| `scripts/export-all.sh` | Batch-export `src/` → `export/` |
-| `scripts/cloud-agent-install.sh` | Cloud Agent bootstrap |
+| `scripts/aseprite-cli.sh` | Headless CLI wrapper (`-b` + Xvfb when needed) |
+| `scripts/export-all.sh` | Batch-export `src/` → `export/` (headless) |
+| `scripts/cloud-agent-install.sh` | Cloud Agent bootstrap + headless smoke test |
 
 ## Setup
 
@@ -21,11 +22,23 @@ Pixel-art asset repository. Edit `.aseprite` files under `src/`, export into `ex
 
 Cloud Agents: use install command `./scripts/cloud-agent-install.sh` in the Cursor Environment panel (Save the tested snapshot so Aseprite is already present).
 
-## Export
+## Export (headless / Linux)
+
+Scripts default to **no GUI**: batch mode (`-b`), `SDL_VIDEODRIVER=dummy`, and `xvfb-run` when there is no display.
 
 ```bash
 ./scripts/export-all.sh
+# or one file:
+./scripts/aseprite-cli.sh src/examples/demo.aseprite --save-as export/examples/demo.png
 ```
+
+| Variable | Effect |
+| --- | --- |
+| `ASEPRITE_HEADLESS=1` | Default. Prefer headless behavior |
+| `ASEPRITE_FORCE_XVFB=1` | Always wrap with `xvfb-run` |
+| `ASEPRITE_HEADLESS=0` | Allow using an existing `DISPLAY` without forcing Xvfb |
+
+Interactive GUI still works when a display is available: run `aseprite` directly (not via `aseprite-cli.sh`).
 
 ## Game repo (development)
 

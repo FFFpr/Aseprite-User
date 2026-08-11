@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
 # Export every .aseprite / .ase file under src/ into export/.
+# Headless by default (Linux servers / Cloud Agents / CI).
 # During development, game repos can read export/ directly (no Release required).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$ROOT/src"
 OUT="$ROOT/export"
+CLI="$ROOT/scripts/aseprite-cli.sh"
 
-if ! command -v aseprite >/dev/null 2>&1; then
-  if [[ -x "$HOME/.local/bin/aseprite" ]]; then
-    export PATH="$HOME/.local/bin:$PATH"
-  else
-    echo "aseprite not found. Run scripts/install-aseprite.sh first." >&2
-    exit 1
-  fi
-fi
+# Default to headless unless the caller opts out.
+export ASEPRITE_HEADLESS="${ASEPRITE_HEADLESS:-1}"
 
 mkdir -p "$OUT"
 
@@ -39,7 +35,7 @@ for src in "${files[@]}"; do
   mkdir -p "$dest_dir"
   dest="$dest_dir/${base_noext}.png"
   echo "Exporting $rel -> ${dest#"$ROOT"/}"
-  if aseprite -b "$src" --save-as "$dest"; then
+  if "$CLI" "$src" --save-as "$dest"; then
     count=$((count + 1))
   else
     echo "Failed: $rel" >&2
