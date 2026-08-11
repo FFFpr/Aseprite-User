@@ -1,5 +1,6 @@
 -- Thick round-end hammer (same family as simple hammer; bigger/thicker head).
--- Ends bulge only a few pixels. Canvas 48x48. Does not modify hammer.aseprite.
+-- Through-haft: wood stub protrudes on the left of the head.
+-- Canvas 48x48. Does not modify hammer.aseprite.
 -- Usage: ./scripts/aseprite-cli.sh --script scripts/make_hammer_round.lua
 
 local OUT_ASE = app.params["out_ase"] or "src/weapons/hammer_round.aseprite"
@@ -46,16 +47,16 @@ local rows = {
   "...OLLLLLLLMMMMMMO..............................", -- 11
   "...OLLLLLLMMMMMMMO..............................", -- 12
   "...OLLLLLMMMMMMMMO..............................", -- 13
-  "..OLLLLLLMMMMMMMMMO.............................", -- 14
-  "..OLLLLLMMMMMMMMMMOOOOOOOOOOOOOOOOOOO...........", -- 15
-  ".OLLLLLLMMMMMMMMlllllllllllllllwwwwwlO..........", -- 16
-  ".OLLLLLMMMMMMMMMlllllllllllllllwwwwwllO.........", -- 17
-  ".OLLLLMMMMMMMMMDmmmmmmmmmmmmmmmwwwwwmmO.........", -- 18
-  ".OLMLLMMMMMMMMDDmmmmmmmmmmmmmmmwwwwwmmO.........", -- 19
-  ".OLMLMMMMMMMMMDDdddddddddddddddwwwwwddO.........", -- 20
-  ".OLMMMMMMMMMMDDDdddddddddddddddwwwwwdO..........", -- 21
-  "..OMMMMMMMMMMDDDDDOOOOOOOOOOOOOOOOOOO...........", -- 22
-  "..OMMMMMMMMMDDDDDDO.............................", -- 23
+  "...OLLLLLMMMMMMMMMO.............................", -- 14
+  "...OLLLLMMMMMMMMMMOOOOOOOOOOOOOOOOOOO...........", -- 15
+  "..OllllllllllllllllllllllllllllwwwwwlO..........", -- 16
+  ".OlllllllllllllllllllllllllllllwwwwwllO.........", -- 17
+  ".OmmmmmmmmmmmmmmmmmmmmmmmmmmmmmwwwwwmmO.........", -- 18
+  ".OmmmmmmmmmmmmmmmmmmmmmmmmmmmmmwwwwwmmO.........", -- 19
+  ".OdddddddddddddddddddddddddddddwwwwwddO.........", -- 20
+  "..OddddddddddddddddddddddddddddwwwwwdO..........", -- 21
+  "...OMMMMMMMMMDDDDDOOOOOOOOOOOOOOOOOOO...........", -- 22
+  "...OMMMMMMMMDDDDDDO.............................", -- 23
   "...OMMMMMMMDDDDDDO..............................", -- 24
   "...OMMMMMMMDDDDDDO..............................", -- 25
   "...OMMMMMMDDDDDDDO..............................", -- 26
