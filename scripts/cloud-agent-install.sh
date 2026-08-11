@@ -8,6 +8,12 @@ cd "$ROOT"
 mkdir -p src export
 export PATH="$HOME/.local/bin:$PATH"
 
+# Hydrate Git LFS art binaries when pointers are checked out.
+if command -v git-lfs >/dev/null 2>&1 && [[ -d .git ]]; then
+  git lfs install --local >/dev/null 2>&1 || true
+  git lfs pull || true
+fi
+
 aseprite_ok() {
   command -v aseprite >/dev/null 2>&1 && aseprite --version >/dev/null 2>&1
 }

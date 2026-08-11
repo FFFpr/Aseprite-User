@@ -29,6 +29,7 @@ if [[ ${#files[@]} -eq 0 ]]; then
 fi
 
 count=0
+failed=0
 for src in "${files[@]}"; do
   [[ -f "$src" ]] || continue
   rel="${src#"$SRC"/}"
@@ -38,9 +39,16 @@ for src in "${files[@]}"; do
   mkdir -p "$dest_dir"
   dest="$dest_dir/${base_noext}.png"
   echo "Exporting $rel -> ${dest#"$ROOT"/}"
-  # -b: batch / headless; flat PNG per file (spritesheets can use a custom script later)
-  aseprite -b "$src" --save-as "$dest"
-  count=$((count + 1))
+  if aseprite -b "$src" --save-as "$dest"; then
+    count=$((count + 1))
+  else
+    echo "Failed: $rel" >&2
+    failed=$((failed + 1))
+  fi
 done
 
 echo "Exported $count file(s) into export/."
+if [[ "$failed" -gt 0 ]]; then
+  echo "$failed file(s) failed to export." >&2
+  exit 1
+fi
