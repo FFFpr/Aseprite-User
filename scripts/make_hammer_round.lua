@@ -1,5 +1,5 @@
 -- Thick round-end hammer, true side view (not cross-section).
--- Metal head stays solid; wood stub protrudes left; handle exits right.
+-- Metal head solid; wood stub left; handle right; right peen bulge OVER wood.
 -- Canvas 48x48. Does not modify hammer.aseprite.
 -- Usage: ./scripts/aseprite-cli.sh --script scripts/make_hammer_round.lua
 
@@ -49,12 +49,12 @@ local rows = {
   "...OLLLLLMMMMMMMMO..............................", -- 13
   "...OLLLLLMMMMMMMMMO.............................", -- 14
   "...OLLLLMMMMMMMMMMOOOOOOOOOOOOOOOOOOO...........", -- 15
-  "..OlLLLLMMMMMMMMlllllllllllllllwwwwwlO..........", -- 16
-  ".OllLLLMMMMMMMMMlllllllllllllllwwwwwllO.........", -- 17
-  ".OmmLLMMMMMMMMMDmmmmmmmmmmmmmmmwwwwwmmO.........", -- 18
-  ".OmmLLMMMMMMMMDDmmmmmmmmmmmmmmmwwwwwmmO.........", -- 19
-  ".OddLMMMMMMMMMDDdddddddddddddddwwwwwddO.........", -- 20
-  "..OdMMMMMMMMMDDDdddddddddddddddwwwwwdO..........", -- 21
+  "..OlLLLLMMMMMMMMDMDllllllllllllwwwwwlO..........", -- 16
+  ".OllLLLMMMMMMMMMDMDllllllllllllwwwwwllO.........", -- 17
+  ".OmmLLMMMMMMMMMDDMDmmmmmmmmmmmmwwwwwmmO.........", -- 18
+  ".OmmLLMMMMMMMMDDDDDmmmmmmmmmmmmwwwwwmmO.........", -- 19
+  ".OddLMMMMMMMMMDDDDDddddddddddddwwwwwddO.........", -- 20
+  "..OdMMMMMMMMMDDDDDDddddddddddddwwwwwdO..........", -- 21
   "...OMMMMMMMMMDDDDDOOOOOOOOOOOOOOOOOOO...........", -- 22
   "...OMMMMMMMMDDDDDDO.............................", -- 23
   "...OMMMMMMMDDDDDDO..............................", -- 24
