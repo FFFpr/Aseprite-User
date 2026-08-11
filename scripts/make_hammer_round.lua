@@ -1,5 +1,5 @@
--- Thick round-end hammer (same family as simple hammer; bigger/thicker head).
--- Through-haft: wood stub protrudes on the left of the head.
+-- Thick round-end hammer, true side view (not cross-section).
+-- Metal head stays solid; wood stub protrudes left; handle exits right.
 -- Canvas 48x48. Does not modify hammer.aseprite.
 -- Usage: ./scripts/aseprite-cli.sh --script scripts/make_hammer_round.lua
 
@@ -49,12 +49,12 @@ local rows = {
   "...OLLLLLMMMMMMMMO..............................", -- 13
   "...OLLLLLMMMMMMMMMO.............................", -- 14
   "...OLLLLMMMMMMMMMMOOOOOOOOOOOOOOOOOOO...........", -- 15
-  "..OllllllllllllllllllllllllllllwwwwwlO..........", -- 16
-  ".OlllllllllllllllllllllllllllllwwwwwllO.........", -- 17
-  ".OmmmmmmmmmmmmmmmmmmmmmmmmmmmmmwwwwwmmO.........", -- 18
-  ".OmmmmmmmmmmmmmmmmmmmmmmmmmmmmmwwwwwmmO.........", -- 19
-  ".OdddddddddddddddddddddddddddddwwwwwddO.........", -- 20
-  "..OddddddddddddddddddddddddddddwwwwwdO..........", -- 21
+  "..OlLLLLMMMMMMMMlllllllllllllllwwwwwlO..........", -- 16
+  ".OllLLLMMMMMMMMMlllllllllllllllwwwwwllO.........", -- 17
+  ".OmmLLMMMMMMMMMDmmmmmmmmmmmmmmmwwwwwmmO.........", -- 18
+  ".OmmLLMMMMMMMMDDmmmmmmmmmmmmmmmwwwwwmmO.........", -- 19
+  ".OddLMMMMMMMMMDDdddddddddddddddwwwwwddO.........", -- 20
+  "..OdMMMMMMMMMDDDdddddddddddddddwwwwwdO..........", -- 21
   "...OMMMMMMMMMDDDDDOOOOOOOOOOOOOOOOOOO...........", -- 22
   "...OMMMMMMMMDDDDDDO.............................", -- 23
   "...OMMMMMMMDDDDDDO..............................", -- 24
