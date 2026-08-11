@@ -1,49 +1,31 @@
 # Aseprite-User
 
-Pixel-art asset repository. Edit `.aseprite` files under `src/`, export into `export/`, and let game repos pull this branch during development (no Release required until you freeze a version).
+Asset repo: edit under `src/`, export to `export/`. Game repos can consume `export/` from this branch during development (no Release required until you freeze a version).
 
 ## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `src/` | Aseprite sources (`.aseprite` / `.ase`) |
-| `export/` | Exported PNGs for game projects |
-| `scripts/install-aseprite.sh` | Build and install Aseprite (personal use, EULA) |
-| `scripts/aseprite-cli.sh` | Headless CLI wrapper (`-b` + Xvfb when needed) |
-| `scripts/export-all.sh` | Batch-export `src/` → `export/` (headless) |
-| `scripts/cloud-agent-install.sh` | Cloud Agent bootstrap + headless smoke test |
+| `src/` | `.aseprite` / `.ase` sources |
+| `export/` | Exported PNGs |
+| `.cursor/environment.json` | Cloud Agent install |
+| `scripts/` | System deps, Aseprite build, headless CLI, export |
 
 ## Setup
 
 ```bash
-./scripts/install-system-deps.sh   # Ubuntu/Debian build packages
-./scripts/install-aseprite.sh      # Skia + Aseprite → ~/.local/opt/aseprite
+./scripts/install-system-deps.sh
+./scripts/install-aseprite.sh
 ```
 
-Cloud Agents use `.cursor/environment.json` → `./scripts/cloud-agent-install.sh` (headless smoke test included; builds Aseprite when the binary is missing).
+Cloud Agents run `./scripts/cloud-agent-install.sh` via `.cursor/environment.json`.
 
-## Export (headless / Linux)
-
-Scripts default to **no GUI**: batch mode (`-b`), `SDL_VIDEODRIVER=dummy`, and `xvfb-run` when there is no display.
+## Export (headless Linux)
 
 ```bash
 ./scripts/export-all.sh
-# or one file:
-./scripts/aseprite-cli.sh src/examples/demo.aseprite --save-as export/examples/demo.png
 ```
 
-| Variable | Effect |
-| --- | --- |
-| `ASEPRITE_HEADLESS=1` | Default. Prefer headless behavior |
-| `ASEPRITE_FORCE_XVFB=1` | Always wrap with `xvfb-run` |
-| `ASEPRITE_HEADLESS=0` | Allow using an existing `DISPLAY` without forcing Xvfb |
+Uses batch mode and Xvfb when `DISPLAY` is unset. Interactive GUI: run `aseprite` directly when a display is available.
 
-Interactive GUI still works when a display is available: run `aseprite` directly (not via `aseprite-cli.sh`).
-
-## Game repo (development)
-
-Point the game at this repo’s `export/` (sibling path, submodule tracking `main`, or shallow clone of `main`). Cut tags/Releases only when you need a frozen asset set.
-
-## License note
-
-Aseprite source may be compiled for personal use. Do **not** redistribute the `aseprite` binary. See [Aseprite EULA](https://github.com/aseprite/aseprite/blob/main/EULA.txt).
+Aseprite may be compiled for personal use; do not redistribute the binary ([EULA](https://github.com/aseprite/aseprite/blob/main/EULA.txt)).

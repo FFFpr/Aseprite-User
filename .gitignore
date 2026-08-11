@@ -1,3 +1,1 @@
-# Local build caches (Aseprite itself is installed outside the repo)
 .DS_Store
-*.tmp

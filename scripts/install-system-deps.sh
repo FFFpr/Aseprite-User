@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install Ubuntu/Debian packages required to build Aseprite.
+# Ubuntu/Debian packages for building and running Aseprite headless.
 set -euo pipefail
 
 if [[ "$(id -u)" -eq 0 ]]; then
@@ -15,10 +15,7 @@ export DEBIAN_FRONTEND=noninteractive
 "${SUDO[@]}" apt-get update -qq
 "${SUDO[@]}" apt-get install -y --no-install-recommends \
   git curl ca-certificates unzip \
-  g++ clang cmake ninja-build \
-  libstdc++-14-dev \
+  g++ clang cmake ninja-build libstdc++-14-dev \
   libx11-dev libxcursor-dev libxi-dev libxrandr-dev \
   libgl1-mesa-dev libfontconfig1-dev \
   xvfb
-
-echo "System dependencies installed."
