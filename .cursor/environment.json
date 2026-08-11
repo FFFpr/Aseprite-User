@@ -1,0 +1,4 @@
+{
+  "name": "Aseprite-User",
+  "install": "./scripts/cloud-agent-install.sh"
+}
