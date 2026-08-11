@@ -1,31 +1,71 @@
 # Aseprite-User
 
-Asset repo: edit under `src/`, export to `export/`. Game repos can consume `export/` from this branch during development (no Release required until you freeze a version).
+像素资源仓库：在 `src/` 编辑 Aseprite 源文件，导出到 `export/`。开发阶段游戏仓库可直接引用本仓库 `export/`（不必每次发 Release）。
 
-## Layout
+## 目录
 
-| Path | Purpose |
+| 路径 | 作用 |
 | --- | --- |
-| `src/` | `.aseprite` / `.ase` sources |
-| `export/` | Exported PNGs |
-| `.cursor/environment.json` | Cloud Agent install |
-| `scripts/` | System deps, Aseprite build, headless CLI, export |
+| `src/` | `.aseprite` / `.ase` 源文件 |
+| `export/` | 导出的 PNG，供游戏使用 |
+| `.cursor/environment.json` | Cloud Agent 环境安装入口 |
+| `scripts/` | 系统依赖、Aseprite 编译、无界面 CLI、导出 |
 
-## Setup
+## 一、安装 Aseprite（本机首次）
 
 ```bash
 ./scripts/install-system-deps.sh
 ./scripts/install-aseprite.sh
 ```
 
-Cloud Agents run `./scripts/cloud-agent-install.sh` via `.cursor/environment.json`.
+安装结果在 `~/.local/opt/aseprite`，并链接到 `~/.local/bin/aseprite`。请确保 `~/.local/bin` 在 `PATH` 中：
 
-## Export (headless Linux)
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+aseprite --version
+```
+
+Cloud Agent 构建环境时会执行 `.cursor/environment.json` 中的 `./scripts/cloud-agent-install.sh`：若尚未安装 Aseprite，会自动编译；已安装则跳过。
+
+## 二、画图
+
+用带界面的 Aseprite 编辑（不要用 `aseprite-cli.sh`，那是无界面导出用的）：
+
+```bash
+aseprite
+# 或打开已有文件：
+aseprite src/player/idle.aseprite
+```
+
+约定：
+
+1. 新建或修改后，把文件保存到 `src/`（可分子目录，例如 `src/ui/button.aseprite`）。
+2. 源文件进 Git；大文件由 Git LFS 管理（见 `.gitattributes`）。
+3. 真正动手画图建议在本机（或有桌面的环境）；Cloud Agent 更适合无界面导出/批处理。
+
+## 三、导出
+
+每个源文件单独导出一次：
 
 ```bash
 ./scripts/export.sh --input src/player/idle.aseprite --output export/player/idle.png
 ```
 
-Uses batch mode and Xvfb when `DISPLAY` is unset. Interactive GUI: run `aseprite` directly when a display is available.
+- `--input`：单个 `.aseprite` 或 `.ase` 文件  
+- `--output`：对应的单个 `.png` 路径  
+- 无显示器时自动走批处理 + Xvfb（Linux headless）
 
-Aseprite may be compiled for personal use; do not redistribute the binary ([EULA](https://github.com/aseprite/aseprite/blob/main/EULA.txt)).
+日常循环：
+
+1. 在 GUI 中改 `src/` 并保存  
+2. 对改过的文件跑 `export.sh`  
+3. 游戏侧读取 `export/`  
+4. 需要时 `git add` / `commit` / `push`
+
+## 四、给游戏仓库用（开发期）
+
+游戏仓库直接依赖本仓库当前分支的 `export/` 即可（本地并列目录、跟踪 `main` 的 submodule、或浅克隆都可以）。等资源需要冻结版本时，再打 tag / 发 Release。
+
+## 许可
+
+可自行编译 Aseprite 供个人使用；**不要分发**编译出的 `aseprite` 二进制。详见 [Aseprite EULA](https://github.com/aseprite/aseprite/blob/main/EULA.txt)。
