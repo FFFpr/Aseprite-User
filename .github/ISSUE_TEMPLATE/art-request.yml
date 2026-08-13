@@ -1,0 +1,34 @@
+name: Art asset request
+description: Create a new pixel-art asset or change an existing one
+title: "[art] "
+labels: []
+body:
+  - type: dropdown
+    id: action
+    attributes:
+      label: Action
+      options:
+        - Create new asset
+        - Modify existing asset
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What the asset should look like (subject, view, size, palette, animation).
+      placeholder: Left-facing side-view iron sword, 48x48, same metal/wood palette as src/weapons/hammer.aseprite
+    validations:
+      required: true
+  - type: input
+    id: existing_path
+    attributes:
+      label: Existing source path
+      description: Required when modifying. Example `src/weapons/hammer.aseprite`.
+      placeholder: src/weapons/hammer.aseprite
+  - type: input
+    id: output_path
+    attributes:
+      label: Output location (optional)
+      description: "Create with no path → README default under src/<category>/<slug>.aseprite and export/<category>/<slug>.png. Modify with no path → edit in place. If set, create writes there (and the paired src/export file); modify moves then edits."
+      placeholder: src/weapons/iron_sword.aseprite
