@@ -9,9 +9,11 @@ permissions:
 
 jobs:
   label:
+    if: ${{ !github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v7
+      - name: Ensure art label
+        uses: actions/github-script@v7
         with:
           script: |
             const label = 'art';
@@ -34,3 +36,42 @@ jobs:
               issue_number: context.issue.number,
               labels: [label],
             });
+
+      - name: Start Cursor art automation
+        uses: actions/github-script@v7
+        env:
+          CURSOR_WEBHOOK_URL: ${{ secrets.CURSOR_WEBHOOK_URL }}
+          CURSOR_WEBHOOK_TOKEN: ${{ secrets.CURSOR_WEBHOOK_TOKEN }}
+        with:
+          script: |
+            const url = (process.env.CURSOR_WEBHOOK_URL || '').trim();
+            let token = (process.env.CURSOR_WEBHOOK_TOKEN || '').trim();
+            if (!url || !token) {
+              core.setFailed('Repository secrets CURSOR_WEBHOOK_URL and CURSOR_WEBHOOK_TOKEN must both be set');
+              return;
+            }
+            if (!url.startsWith('https://')) {
+              core.setFailed('CURSOR_WEBHOOK_URL must be an https URL');
+              return;
+            }
+            token = token.replace(/^Bearer\s+/i, '').trim();
+            const issue = context.payload.issue;
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                issue_number: issue.number,
+                issue_title: issue.title || '',
+                issue_body: issue.body || '',
+                issue_url: issue.html_url || '',
+              }),
+            });
+            if (!res.ok) {
+              const text = await res.text();
+              core.setFailed(`Cursor webhook returned ${res.status}: ${text.slice(0, 500)}`);
+              return;
+            }
+            core.info(`Started Cursor art automation for issue #${issue.number}`);
