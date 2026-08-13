@@ -43,6 +43,14 @@ aseprite src/player/idle.aseprite
 2. 源文件进 Git；大文件由 Git LFS 管理（见 `.gitattributes`）。
 3. 真正动手画图建议在本机（或有桌面的环境）；Cloud Agent 更适合无界面导出/批处理。
 
+**默认落盘位置**（Issue 未指定路径时用这一对；指定了路径则按 Issue，并补齐另一侧）：
+
+| | 源文件 | 导出 PNG |
+| --- | --- | --- |
+| 默认 | `src/<分类>/<名字>.aseprite` | `export/<分类>/<名字>.png` |
+
+分类对照已有目录（`weapons` / `props` / `scenes` 等）。修改且未指定输出路径时，原地改源文件并重新导出；指定了输出路径则先迁移这一对文件再改。
+
 ## 三、导出
 
 每个源文件单独导出一次：
@@ -65,6 +73,12 @@ aseprite src/player/idle.aseprite
 ## 四、给游戏仓库用（开发期）
 
 游戏仓库直接依赖本仓库当前分支的 `export/` 即可（本地并列目录、跟踪 `main` 的 submodule、或浅克隆都可以）。等资源需要冻结版本时，再打 tag / 发 Release。
+
+## 五、用 GitHub Issue 提美术需求
+
+用 **Art asset request** 模板开 Issue，写清是新建还是修改、画面要求、已有文件路径（修改时）、可选的输出路径。
+
+新 Issue 会打上 `art` 标签，供 [Cursor Automation](https://cursor.com/automations) 按 `.cursor/skills/art-from-issue/SKILL.md` 改素材并开 PR。
 
 ## 许可
 
