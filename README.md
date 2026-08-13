@@ -78,7 +78,7 @@ aseprite src/player/idle.aseprite
 
 用 **Art asset request** 模板开 Issue，写清是新建还是修改、画面要求、已有文件路径（修改时）、可选的输出路径。
 
-新 Issue 会打上 `art` 标签，供 [Cursor Automation](https://cursor.com/automations) 按 `.cursor/skills/art-from-issue/SKILL.md` 改素材并开 PR。
+新 Issue 会打上 `art` 标签，供 [Cursor Automation](https://cursor.com/automations) 按 `.cursor/skills/art-from-issue/SKILL.md` 改素材、合并进默认分支并关闭 Issue。不符合要求时再开修改 Issue。
 
 ## 许可
 

@@ -1,6 +1,6 @@
 ---
 name: art-from-issue
-description: Create or modify Aseprite pixel-art assets from a GitHub issue, including path defaults, in-place edits, and file moves. Use when an issue requests art, when the art label is added, or when exporting src/ to export/.
+description: Create or modify Aseprite pixel-art assets from a GitHub issue, then merge the PR and close the issue. Use when an issue requests art, when the art label is added, or when exporting src/ to export/.
 ---
 
 # Art from GitHub issue
@@ -56,6 +56,10 @@ Do not change unrelated files. Do not add or remove the `art` label.
 
 ## Finish
 
+Ship the files you produced. Do not wait for review, approval, or a quality check. If the image is wrong, the requester will open a new modify issue.
+
 1. Open a PR against the default branch. Title and body in English. Include `Fixes #<issue-number>`.
-2. Comment on the issue with the PR URL and the final `src/` + `export/` paths.
-3. If you cannot complete the art, comment with what is missing and do not open an empty PR.
+2. Merge the PR immediately (squash if the repo allows it).
+3. If the triggering issue is still open after merge, close it.
+4. Comment on the issue with the PR URL, that it was merged, and the final `src/` + `export/` paths.
+5. Only skip the PR when there are no files to commit (not an art request, or a modify whose source cannot be found). Then comment once and stop.
