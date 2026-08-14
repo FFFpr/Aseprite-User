@@ -1,65 +1,75 @@
 ---
 name: art-from-issue
-description: Create or modify Aseprite pixel-art assets from a GitHub issue, then merge the PR and close the issue. Use when an issue requests art, when the art label is added, or when exporting src/ to export/.
+description: 按 GitHub issue 新建或修改像素图，成对产出源文件与 PNG 并合并进默认分支。若带有 Ember 的 bc- 与定责 issue，则扇入叫醒游戏 agent。处理美术 issue、art 标签或 webhook 出图时使用。
 ---
 
-# Art from GitHub issue
+# 按 GitHub issue 出图
 
-Handle one GitHub issue that asks to create or change pixel-art in this repo. Always produce a paired Aseprite source and PNG export.
+处理**一个**要求创建或修改本仓库像素图的 GitHub issue。必须成对产出 Aseprite 源文件和 PNG。不要等待审查、批准或质量验收；图不对时由需求方再开修改 issue。
 
-## Layout
+## 读哪个 issue
 
-| Role | Path |
+优先用本次启动时的 webhook JSON（若有）：`issue_number`、`issue_title`、`issue_body`、`issue_url`，以及可选的 `cursor_agent_id`（`bc-…`）、`ember_issue_url`。
+
+没有 `issue_number`：不要评论、不要编造 issue，停止。
+
+payload 没有 `cursor_agent_id` / `ember_issue_url` 时，再从 issue 正文或模板字段（`cursor_agent_id`、`ember_issue`）解析。仍然没有则视为手工要图：只出图、合 PR、关本仓 issue，不做扇入。
+
+若设置了 `GH_TOKEN`，所有 `gh` 调用（含向 Ember issue 写回执）都用它，不要用 Cursor GitHub App 的默认 token 做 issue 或 merge API。
+
+## 路径
+
+| 角色 | 路径 |
 | --- | --- |
-| Source | `src/<rel>.aseprite` (or `.ase`) |
-| Export | `export/<rel>.png` |
+| 源文件 | `src/<rel>.aseprite`（或 `.ase`） |
+| 导出 | `export/<rel>.png` |
 
-`<rel>` may include category folders already used in the repo (`weapons`, `props`, `scenes`, …). README default when the issue omits a path: put new files under `src/<category>/<slug>.aseprite` and `export/<category>/<slug>.png`.
+`<rel>` 可含本仓库已有分类目录（`weapons`、`props`、`scenes` 等）。issue 未指定路径时，默认 `src/<分类>/<名字>.aseprite` 与 `export/<分类>/<名字>.png`。
 
-Treat any issue path as one side of that pair. If the issue names a PNG under `export/`, derive the source under `src/` with the same relative path. If it names a source under `src/`, derive the PNG under `export/`.
+issue 里写的路径视为这一对的其中一侧：写了 `export/` 下的 PNG 则推导 `src/`，反之亦然。
 
-## Parse the issue
+解析标题、正文、模板字段（`action`、`description`、`existing_path`、`output_path`）。自由 Markdown（例如由另一个 agent 开出）则从标题和正文（含表格）推断新建/修改和路径。用词如 新建 / 创建 / create 与 修改 / 改 / modify。
 
-Read the title, body, and template fields (`action`, `description`, `existing_path`, `output_path`). Infer create vs modify from those fields, or from wording such as 新建 / 创建 / create vs 修改 / 改 / modify.
+不是美术请求（安装、流程、提问）：在本仓 issue 上评论一次，不要开 PR。
 
-Skip with one issue comment (no PR) when the issue is not an art request (install help, process, questions).
+## 新建
 
-## Create
+1. 指定了输出路径 → 写到该处并补齐成对文件。未指定 → README 默认路径；分类从已有目录或请求推断，名字从资产名生成（小写、下划线）。
+2. 除非 issue 明确要求替换，否则不要覆盖已有源文件。
+3. 画图、保存源文件、导出 PNG。
 
-1. Resolve the output pair:
-   - Issue specified an output path → write there (and the paired `src`/`export` file).
-   - No output path → README default: `src/<category>/<slug>.aseprite` and `export/<category>/<slug>.png`. Infer category from existing folders or the request; infer slug from the asset name (lowercase, underscores).
-2. Do not overwrite an existing source unless the issue clearly asks to replace it.
-3. Draw the asset, save the source, export the PNG.
+## 修改
 
-## Modify
+1. 用 `existing_path`、正文路径或按资产名搜索定位当前这一对。找不到则评论一次并停止。
+2. 指定的输出路径与当前不同：对源文件和 PNG 都 `git mv`，再在新位置改。
+3. 未指定输出路径：原地改。
+4. 改源文件后重新导出 PNG。
 
-1. Resolve the current pair from `existing_path`, paths in the body, or a repo search by asset name. Stop and comment if you cannot find the file.
-2. If the issue specified an output path and it differs from the current pair: `git mv` the source and the export PNG to the new pair (create directories as needed), then edit at the new location.
-3. If there is no output path: edit in place.
-4. Re-export the PNG after changing the source.
+## 怎么画
 
-## How to draw
+对齐已有精灵：小幅像素、有限色板、透明底、侧面或 issue 要求的视角。
 
-Match existing sprites: small pixel art, limited palette, isolated background, side or requested view.
-
-Prefer an Aseprite Lua script plus headless CLI, same pattern as `scripts/make_hammer.lua`:
+优先用 Aseprite Lua + 无界面 CLI，与 `scripts/make_hammer.lua` 相同：
 
 ```bash
 ./scripts/aseprite-cli.sh --script path/to/script.lua
 ./scripts/export.sh --input src/<rel>.aseprite --output export/<rel>.png
 ```
 
-`GenerateImage` is optional reference only. Do not commit a PNG that has no matching source. Binaries are Git LFS (see `.gitattributes`).
+`GenerateImage` 仅作可选参考。不要提交没有对应源文件的 PNG。二进制走 Git LFS（见 `.gitattributes`）。
 
-Do not change unrelated files. Do not add or remove the `art` label.
+不要改无关文件。不要新增或去掉 `art` 标签。
 
-## Finish
+## 收尾（出图 → 扇入 → 关单）
 
-Ship the files you produced. Do not wait for review, approval, or a quality check. If the image is wrong, the requester will open a new modify issue.
-
-1. Open a PR against the default branch. Title and body in English. Include `Fixes #<issue-number>`.
-2. Merge the PR immediately (squash if the repo allows it).
-3. If the triggering issue is still open after merge, close it.
-4. Comment on the issue with the PR URL, that it was merged, and the final `src/` + `export/` paths.
-5. Only skip the PR when there are no files to commit (not an art request, or a modify whose source cannot be found). Then comment once and stop.
+1. 对默认分支开 PR。Title 和 body 用英文。含 `Fixes #<issue-number>`。
+2. 若是 draft，先 `gh pr ready`，再立刻 `gh pr merge --squash`。
+3. 扇入（仅当有 `cursor_agent_id`）：
+   - 用 Cursor Cloud Agents API 查询该 `bc-…`：若有 run 处于 `CREATING` 或 `RUNNING` 则等待至空闲。
+   - 空闲后 `POST /v1/agents/{cursor_agent_id}/runs`。prompt 用中文，说明：图已合并进 Aseprite-User 默认分支；本仓 issue 号与 URL；PR URL；最终 `src/` 与 `export/` 路径；Ember issue 链接（若有）。要求对方更新子模块、对照定责 issue / 样例验收，不要另开抢同一 Ember issue 的平行 PR。
+   - 失败（含 `409 agent_busy`）则等待后重试，最多 3 次。记下每次尝试的时间、HTTP 状态、成败原因。
+   - 不要因 follow-up 失败而回滚已合并的美术 PR。凭环境中的 Cursor API 凭据调用；没有凭据则跳过 POST，在 Ember 回执里写明未发送。
+4. 若有 `ember_issue_url`：在该 Ember issue 下评论，报告美术已完成并合并（PR、src、export），以及对 `bc-…` 的每次发送尝试结果。3 次都失败时写明未叫醒 owner，以本评论为回执。
+5. 在本仓触发 issue 上评论：PR URL、已合并、最终路径；若做了扇入，附带 Ember 回执摘要。
+6. 本仓触发 issue 仍开着则关闭。
+7. 仅在无文件可提交时跳过 PR（不是美术请求，或修改找不到源文件）：评论一次后停止。
